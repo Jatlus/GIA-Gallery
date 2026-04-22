@@ -29,8 +29,11 @@ import {
   SCALE_GESTURE_ARROW_WIDTH,
 } from './constants.js';
 
-const debugCanvas = document.createElement('canvas');
-const debugCtx = debugCanvas.getContext('2d');
+// Lazily created — only added to the DOM when webcam mode is first activated.
+// Previously these were created at module load time, causing an unstyled
+// 300×150 black canvas to appear in the corner when in Mouse mode.
+let debugCanvas = null;
+let debugCtx = null;
 const HANDS_OPTIONS = Object.freeze({
   maxNumHands: MAX_NUM_HANDS,
   modelComplexity: HAND_MODEL_COMPLEXITY,
@@ -91,6 +94,9 @@ function ensureDebugCanvas() {
   if (debugCanvasReady) {
     return;
   }
+
+  debugCanvas = document.createElement('canvas');
+  debugCtx = debugCanvas.getContext('2d');
 
   Object.assign(debugCanvas.style, {
     position: 'fixed',
@@ -406,7 +412,10 @@ export function resetAllHandState() {
   gestureState.forEach(resetGestureSlot);
   scaleGestureIndicator.active = false;
   resetGestureCameraFeedback();
-  clearDebugCanvas();
+
+  if (debugCanvasReady) {
+    clearDebugCanvas();
+  }
 }
 
 function drawLandmarks(landmarks) {
