@@ -1,0 +1,5 @@
+vite-dev.err
+vite-dev.err.log
+vite-dev.log
+vite-dev.out
+*.log
