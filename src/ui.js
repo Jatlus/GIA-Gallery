@@ -86,6 +86,8 @@ export function initUI(surfaceUniforms, deformUniforms, params, options = {}) {
   let openPanel = null;
 
   gui.domElement.style.zIndex = String(GUI_Z_INDEX);
+  gui.domElement.style.maxHeight = "100vh";
+  gui.domElement.style.overflowY = "auto";
   gui.domElement.setAttribute('role', 'presentation');
   const noiseScaleControl = gui.add(params, 'noiseScale', NOISE_SCALE_MIN, NOISE_SCALE_MAX, GUI_STEP)
     .name('Noise Scale')
